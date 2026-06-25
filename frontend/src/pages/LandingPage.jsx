@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import AppCredit from "../components/AppCredit";
 import {
   Zap,
   LayoutTemplate,
@@ -336,6 +337,8 @@ function LandingPage() {
               ))}
             </div>
           </div>
+
+          <AppCredit className="mt-6 border-t border-white/5 pt-6 text-center" />
         </div>
       </footer>
     </div>

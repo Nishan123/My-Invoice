@@ -94,7 +94,7 @@ function Sidebar() {
     <aside
       className={`${
         collapsed ? "w-20" : "w-64"
-      } relative z-20 shrink-0 bg-gray-900 border-r border-gray-800 transition-all duration-300 ease-in-out`}
+      } relative z-20 flex shrink-0 flex-col bg-gray-900 border-r border-gray-800 transition-all duration-300 ease-in-out`}
     >
       <div
         className={`h-16 flex items-center border-b border-gray-800 ${
@@ -113,6 +113,25 @@ function Sidebar() {
       </div>
 
       <nav className="p-4 space-y-1">{menuItems.map(renderNavItem)}</nav>
+
+      <div className="mt-auto border-t border-gray-800 p-4">
+        {collapsed ? (
+          <p
+            title="Designed & developed by Nishan Giri — Web Security (ST6005CEM)"
+            className="text-center text-[10px] font-semibold tracking-wide text-gray-600"
+          >
+            NG
+          </p>
+        ) : (
+          <div className="text-xs leading-relaxed text-gray-500">
+            <p>
+              Designed &amp; developed by{" "}
+              <span className="font-semibold text-gray-400">Nishan Giri</span>
+            </p>
+            <p className="mt-0.5 text-gray-600">Web Security (ST6005CEM)</p>
+          </div>
+        )}
+      </div>
 
       <button
         type="button"

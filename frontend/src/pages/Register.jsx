@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { authAPI } from "../services/api";
 import toast from "react-hot-toast";
+import AppCredit from "../components/AppCredit";
 
 const inputClass =
   "block w-full rounded-lg bg-white/5 border border-white/10 px-3.5 py-2.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition";
@@ -295,6 +296,8 @@ function Register() {
             </Link>
           </p>
         </div>
+
+        <AppCredit className="mt-6 text-center" />
       </div>
     </div>
   );
