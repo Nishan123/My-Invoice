@@ -3,6 +3,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { productsAPI, resolveAssetUrl } from "../services/api";
 import { toast } from "react-hot-toast";
 import Modal from "../components/Modal";
+import SearchInput from "../components/SearchInput";
 
 const CATEGORIES = [
   "Electronics",
@@ -23,6 +24,7 @@ function Products() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [productToDelete, setProductToDelete] = useState(null);
+  const [search, setSearch] = useState("");
 
   // Fetch products
   useEffect(() => {
@@ -106,33 +108,50 @@ function Products() {
     );
   }
 
+  const query = search.trim().toLowerCase();
+  const filteredProducts = query
+    ? products.filter((product) =>
+        `${product.name} ${product.description ?? ""} ${product.category ?? ""}`
+          .toLowerCase()
+          .includes(query)
+      )
+    : products;
+
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-2xl font-bold text-gray-100">Products</h2>
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
-        >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        <div className="flex items-center gap-3">
+          <SearchInput
+            value={search}
+            onChange={setSearch}
+            placeholder="Search products..."
+            className="w-full sm:w-72"
+          />
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="shrink-0 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M12 4v16m8-8H4"
-            />
-          </svg>
-          Add Product
-        </button>
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Add Product
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-        {products.map((product) => {
+        {filteredProducts.map((product) => {
           const stock = product.quantity;
           const stockTone =
             stock === 0
@@ -221,6 +240,14 @@ function Products() {
           );
         })}
       </div>
+
+      {filteredProducts.length === 0 && (
+        <div className="rounded-2xl border border-gray-800 bg-gray-900/40 py-16 text-center text-gray-500">
+          {search
+            ? `No products match "${search}".`
+            : "No products yet. Add your first product."}
+        </div>
+      )}
 
       <Modal
         isOpen={isModalOpen}
