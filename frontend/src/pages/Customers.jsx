@@ -3,6 +3,7 @@ import { customersAPI, invoicesAPI } from "../services/api";
 import { toast } from "react-hot-toast";
 import Modal from "../components/Modal";
 import CustomerHistoryModal from "../components/CustomerHistoryModal";
+import SearchInput from "../components/SearchInput";
 
 function Customers() {
   const [customers, setCustomers] = useState([]);
@@ -15,6 +16,7 @@ function Customers() {
   const [invoices, setInvoices] = useState([]);
   const [historyCustomer, setHistoryCustomer] = useState(null);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetchCustomers();
@@ -119,34 +121,51 @@ function Customers() {
     );
   }
 
+  const query = search.trim().toLowerCase();
+  const filteredCustomers = query
+    ? customers.filter((customer) =>
+        `${customer.name ?? ""} ${customer.email ?? ""} ${customer.phone ?? ""}`
+          .toLowerCase()
+          .includes(query)
+      )
+    : customers;
+
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-2xl font-bold text-gray-100">Customers</h2>
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
-        >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        <div className="flex items-center gap-3">
+          <SearchInput
+            value={search}
+            onChange={setSearch}
+            placeholder="Search by name, email, or phone..."
+            className="w-full sm:w-80"
+          />
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="shrink-0 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M12 4v16m8-8H4"
-            />
-          </svg>
-          Add Customer
-        </button>
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Add Customer
+          </button>
+        </div>
       </div>
 
       {!isLoading && !error && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {customers?.map((customer) => (
+          {filteredCustomers.map((customer) => (
             <div
               key={customer._id}
               onClick={() => openHistory(customer)}
@@ -307,10 +326,12 @@ function Customers() {
         </div>
       )}
 
-      {!isLoading && !error && customers.length === 0 && (
+      {!isLoading && !error && filteredCustomers.length === 0 && (
         <div className="text-center py-12">
           <p className="text-gray-400">
-            No customers found. Add your first customer!
+            {search
+              ? `No customers match "${search}".`
+              : "No customers found. Add your first customer!"}
           </p>
         </div>
       )}
