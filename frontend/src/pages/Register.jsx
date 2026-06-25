@@ -113,21 +113,16 @@ function Register() {
       </div>
 
       <div className="relative sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <Link to="/" className="text-3xl font-display font-bold text-white">
-          <span className="text-blue-500">My</span>-Invoice
+        <Link to="/" className="inline-block">
+          <img
+            src="/logo-with-text.png"
+            alt="My Invoice"
+            className="h-12 w-auto mx-auto"
+          />
         </Link>
         <h2 className="mt-6 font-display text-3xl font-bold tracking-tight text-white">
           Create your account
         </h2>
-        <p className="mt-2 text-sm text-gray-400">
-          Already have an account?{" "}
-          <Link
-            to="/login"
-            className="font-medium text-blue-400 hover:text-blue-300"
-          >
-            Sign in
-          </Link>
-        </p>
       </div>
 
       <div className="relative mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -289,6 +284,16 @@ function Register() {
                 : "Create account"}
             </button>
           </form>
+
+          <p className="mt-6 text-center text-sm text-gray-400">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="font-medium text-blue-400 hover:text-blue-300"
+            >
+              Sign in
+            </Link>
+          </p>
         </div>
       </div>
     </div>

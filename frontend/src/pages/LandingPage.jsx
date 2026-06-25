@@ -63,8 +63,12 @@ function LandingPage() {
       {/* Navigation */}
       <nav className="sticky top-0 z-50 border-b border-white/5 bg-black/60 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <h1 className="text-2xl font-display font-bold text-white">
-            <span className="text-blue-500">My</span>-Invoice
+          <h1 className="flex items-center">
+            <img
+              src="/logo-with-text.png"
+              alt="My Invoice"
+              className="h-9 w-auto"
+            />
           </h1>
           <div className="flex items-center gap-2">
             <Link
@@ -270,9 +274,11 @@ function LandingPage() {
         <div className="max-w-7xl mx-auto px-6 py-12">
           <div className="flex flex-col md:flex-row justify-between items-start gap-12">
             <div className="max-w-sm">
-              <h2 className="text-2xl font-display font-bold text-white">
-                <span className="text-blue-500">My</span>-Invoice
-              </h2>
+              <img
+                src="/logo-with-text.png"
+                alt="My Invoice"
+                className="h-8 w-auto"
+              />
               <p className="mt-4 text-gray-400">
                 Simplifying invoicing for modern businesses. Get started today and
                 experience the difference.

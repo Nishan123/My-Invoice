@@ -1,8 +1,16 @@
 import { createPortal } from "react-dom";
 import { useEffect } from "react";
 import { X } from "lucide-react";
+import PropTypes from "prop-types";
 
-function Modal({ isOpen, onClose, title, children }) {
+const SIZE_CLASSES = {
+  md: "max-w-md",
+  lg: "max-w-lg",
+  xl: "max-w-xl",
+  "2xl": "max-w-2xl",
+};
+
+function Modal({ isOpen, onClose, title, children, size = "md" }) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -28,10 +36,12 @@ function Modal({ isOpen, onClose, title, children }) {
       onClick={handleBackdropClick}
     >
       <div
-        className="bg-gray-900 rounded-xl w-full max-w-md border"
+        className={`bg-gray-900 rounded-xl w-full ${
+          SIZE_CLASSES[size] || SIZE_CLASSES.md
+        } border max-h-[90vh] flex flex-col`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center p-6 border-b border-gray-800">
+        <div className="flex justify-between items-center p-6 border-b border-gray-800 shrink-0">
           <h3 className="text-lg font-semibold text-gray-50">{title}</h3>
           <button
             onClick={onClose}
@@ -40,11 +50,19 @@ function Modal({ isOpen, onClose, title, children }) {
             <X size={20} />
           </button>
         </div>
-        <div className="p-6">{children}</div>
+        <div className="p-6 overflow-y-auto">{children}</div>
       </div>
     </div>,
     document.body
   );
 }
+
+Modal.propTypes = {
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func.isRequired,
+  title: PropTypes.node,
+  children: PropTypes.node,
+  size: PropTypes.oneOf(["md", "lg", "xl", "2xl"]),
+};
 
 export default Modal;

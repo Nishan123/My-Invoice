@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { invoicesAPI } from "../services/api";
 import { toast } from "react-hot-toast";
 import html2pdf from "html2pdf.js";
-import logo from "../assets/react.svg"; // Make sure to add your logo
 
 function InvoiceView() {
   const [invoice, setInvoice] = useState(null);
@@ -167,7 +166,11 @@ function InvoiceView() {
           {/* Header */}
           <div className="flex justify-between items-start mb-8">
             <div>
-              <img src={logo} alt="Company Logo" className="h-12 mb-4" />
+              <img
+                src="/logo-with-text.png"
+                alt="My Invoice"
+                className="h-12 mb-4"
+              />
               <h1 className="text-2xl font-bold text-gray-100">INVOICE</h1>
               <p className="text-gray-400">#{invoice.formattedInvoiceNumber}</p>
             </div>

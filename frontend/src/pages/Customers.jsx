@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { customersAPI } from "../services/api";
+import { customersAPI, invoicesAPI } from "../services/api";
 import { toast } from "react-hot-toast";
 import Modal from "../components/Modal";
+import CustomerHistoryModal from "../components/CustomerHistoryModal";
 
 function Customers() {
   const [customers, setCustomers] = useState([]);
@@ -11,9 +12,13 @@ function Customers() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [editingCustomer, setEditingCustomer] = useState(null);
   const [customerToDelete, setCustomerToDelete] = useState(null);
+  const [invoices, setInvoices] = useState([]);
+  const [historyCustomer, setHistoryCustomer] = useState(null);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   useEffect(() => {
     fetchCustomers();
+    fetchInvoices();
   }, []);
 
   const fetchCustomers = async () => {
@@ -28,6 +33,23 @@ function Customers() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Invoices power each customer's purchase history; a failure here must not
+  // break the customer list, so it falls back quietly to an empty history.
+  const fetchInvoices = async () => {
+    try {
+      const response = await invoicesAPI.getAll();
+      const data = response.data?.data || response.data || [];
+      setInvoices(Array.isArray(data) ? data : []);
+    } catch {
+      setInvoices([]);
+    }
+  };
+
+  const openHistory = (customer) => {
+    setHistoryCustomer(customer);
+    setIsHistoryOpen(true);
   };
 
   const handleSubmit = async (e) => {
@@ -127,18 +149,27 @@ function Customers() {
           {customers?.map((customer) => (
             <div
               key={customer._id}
-              className="bg-gray-900 rounded-xl border  transition-all duration-300 overflow-hidden border border-gray-800"
+              onClick={() => openHistory(customer)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  openHistory(customer);
+                }
+              }}
+              className="cursor-pointer overflow-hidden rounded-xl border border-gray-800 bg-gray-900 transition-colors duration-200 hover:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
             >
               {/* Customer Header */}
               <div className="p-6 bg-gradient-to-r from-black to-gray-950">
-                <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 rounded-full bg-blue-900 flex items-center justify-center">
+                <div className="flex items-center space-x-3 min-w-0">
+                  <div className="w-12 h-12 rounded-full bg-blue-900 flex items-center justify-center shrink-0">
                     <span className="text-xl font-semibold text-blue-600">
                       {customer.name.charAt(0).toUpperCase()}
                     </span>
                   </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-100">
+                  <div className="min-w-0">
+                    <h3 className="truncate text-lg font-semibold text-gray-100">
                       {customer.name}
                     </h3>
                     <p className="text-sm text-gray-400">
@@ -167,6 +198,7 @@ function Customers() {
                     </svg>
                     <a
                       href={`mailto:${customer.email}`}
+                      onClick={(e) => e.stopPropagation()}
                       className="text-sm hover:underline"
                     >
                       {customer.email}
@@ -189,6 +221,7 @@ function Customers() {
                     </svg>
                     <a
                       href={`tel:${customer.phone}`}
+                      onClick={(e) => e.stopPropagation()}
                       className="text-sm hover:underline"
                     >
                       {customer.phone}
@@ -222,7 +255,8 @@ function Customers() {
                 {/* Action Buttons */}
                 <div className="flex justify-end space-x-2 pt-4 border-t border-gray-800">
                   <button
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       setEditingCustomer(customer);
                       setIsModalOpen(true);
                     }}
@@ -244,7 +278,8 @@ function Customers() {
                     <span>Edit</span>
                   </button>
                   <button
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       setCustomerToDelete(customer);
                       setIsDeleteModalOpen(true);
                     }}
@@ -416,6 +451,16 @@ function Customers() {
           </div>
         </div>
       </Modal>
+
+      <CustomerHistoryModal
+        isOpen={isHistoryOpen}
+        onClose={() => {
+          setIsHistoryOpen(false);
+          setHistoryCustomer(null);
+        }}
+        customer={historyCustomer}
+        invoices={invoices}
+      />
     </div>
   );
 }

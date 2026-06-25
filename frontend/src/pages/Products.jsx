@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Pencil, Trash2 } from "lucide-react";
 import { productsAPI, resolveAssetUrl } from "../services/api";
 import { toast } from "react-hot-toast";
 import Modal from "../components/Modal";
@@ -130,67 +131,95 @@ function Products() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <div
-            key={product._id}
-            className="bg-gray-900 rounded-xl border overflow-hidden transition-transform hover:scale-105"
-          >
-            <div className="relative aspect-square">
-              {product.imageUrl ? (
-                <img
-                  src={resolveAssetUrl(product.imageUrl)}
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full bg-gray-700 flex items-center justify-center">
-                  <span className="text-gray-500">No image</span>
-                </div>
-              )}
-              <span className="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded-full text-xs">
-                {product.category}
-              </span>
-            </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        {products.map((product) => {
+          const stock = product.quantity;
+          const stockTone =
+            stock === 0
+              ? "bg-red-400"
+              : stock <= 5
+              ? "bg-amber-400"
+              : "bg-emerald-400";
+          const stockLabel =
+            stock === 0
+              ? "Out of stock"
+              : stock <= 5
+              ? `Low · ${stock} left`
+              : `${stock} in stock`;
 
-            <div className="p-4">
-              <h3 className="text-lg font-semibold text-gray-100 mb-2 truncate">
-                {product.name}
-              </h3>
-              <p className="text-gray-300 text-sm mb-3 line-clamp-2">
-                {product.description}
-              </p>
-              <div className="flex justify-between items-center mb-3">
-                <p className="text-xl font-bold text-blue-600">
-                  ${product.price.toFixed(2)}
-                </p>
-                <span className="text-sm bg-gray-800 text-gray-200 px-2 py-1 rounded-full">
-                  Stock: {product.quantity}
-                </span>
-              </div>
-              <div className="flex justify-end space-x-2">
+          return (
+            <div
+              key={product._id}
+              className="group flex flex-col overflow-hidden rounded-2xl bg-gray-900/60 ring-1 ring-white/5 transition-colors duration-200 hover:ring-white/10"
+            >
+              <div className="relative aspect-square overflow-hidden bg-gray-800/40">
+                {product.imageUrl ? (
+                  <img
+                    src={resolveAssetUrl(product.imageUrl)}
+                    alt={product.name}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <span className="text-sm text-gray-600">No image</span>
+                  </div>
+                )}
+
                 <button
-                  onClick={() => {
-                    setEditingProduct(product);
-                    setIsModalOpen(true);
-                  }}
-                  className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  Edit
-                </button>
-                <button
+                  type="button"
                   onClick={() => {
                     setProductToDelete(product);
                     setIsDeleteModalOpen(true);
                   }}
-                  className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  aria-label={`Delete ${product.name}`}
+                  title="Delete"
+                  className="absolute left-3 top-3 rounded-lg bg-black/50 p-2 text-white backdrop-blur-sm transition-colors hover:bg-red-600"
                 >
-                  Delete
+                  <Trash2 size={16} />
                 </button>
+
+                <span className="absolute right-3 top-3 rounded-full bg-black/60 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                  {product.category}
+                </span>
+              </div>
+
+              <div className="flex flex-1 flex-col p-5">
+                <h3 className="truncate text-base font-medium text-gray-100">
+                  {product.name}
+                </h3>
+                <p className="mt-1 line-clamp-2 min-h-[2.5rem] text-sm leading-relaxed text-gray-500">
+                  {product.description}
+                </p>
+
+                <div className="mt-auto pt-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-lg font-semibold text-gray-100">
+                      ${product.price.toFixed(2)}
+                    </p>
+                    <span className="flex items-center gap-1.5 text-xs text-gray-400">
+                      <span
+                        className={`h-1.5 w-1.5 rounded-full ${stockTone}`}
+                      />
+                      {stockLabel}
+                    </span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEditingProduct(product);
+                      setIsModalOpen(true);
+                    }}
+                    className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+                  >
+                    <Pencil size={15} />
+                    Edit
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <Modal

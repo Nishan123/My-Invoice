@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { invoicesAPI, customersAPI, productsAPI } from "../services/api";
 import { toast } from "react-hot-toast";
 import Modal from "../components/Modal";
+import SearchableSelect from "../components/SearchableSelect";
 
 // Add status options constant at the top
 const STATUS_OPTIONS = ["pending", "paid", "overdue"];
@@ -73,22 +74,16 @@ function CreateInvoice() {
     }
   };
 
-  // Product creation handler
+  // Product creation handler — sends multipart/form-data so the uploaded
+  // image file is preserved, same as the Products page modal.
   const handleCreateProduct = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const productData = {
-      name: formData.get("name"),
-      description: formData.get("description"),
-      price: Number(formData.get("price")),
-      quantity: parseInt(formData.get("quantity")),
-      category: formData.get("category"),
-      imageUrl: formData.get("imageUrl") || undefined,
-    };
 
     try {
-      const response = await productsAPI.create(productData);
-      setProducts([...products, response.data]);
+      const response = await productsAPI.create(formData);
+      const createdProduct = response.data?.data || response.data;
+      setProducts((prev) => [...prev, createdProduct]);
       setIsProductModalOpen(false);
       toast.success("Product created successfully");
     } catch (err) {
@@ -107,7 +102,6 @@ function CreateInvoice() {
   const handleItemChange = (index, field, value) => {
     const newItems = [...items];
     if (field === "product") {
-      const selectedProduct = products.find((p) => p._id === value);
       newItems[index] = {
         ...newItems[index],
         product: value,
@@ -147,6 +141,11 @@ function CreateInvoice() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!selectedCustomer) {
+      toast.error("Please select a customer");
+      return;
+    }
 
     if (items.length === 0 || !items[0].product) {
       toast.error("Please add at least one product");
@@ -219,19 +218,18 @@ function CreateInvoice() {
               + Add New Customer
             </button>
           </div>
-          <select
+          <SearchableSelect
             value={selectedCustomer}
-            onChange={(e) => setSelectedCustomer(e.target.value)}
-            className="w-full p-2 border rounded-lg"
-            required
-          >
-            <option value="">Select a customer</option>
-            {customers.map((customer) => (
-              <option key={customer._id} value={customer._id}>
-                {customer.name}
-              </option>
-            ))}
-          </select>
+            onChange={setSelectedCustomer}
+            placeholder="Select a customer"
+            searchPlaceholder="Search customers by name or email..."
+            emptyMessage="No customers found"
+            options={customers.map((customer) => ({
+              value: customer._id,
+              label: customer.name,
+              description: customer.email,
+            }))}
+          />
         </div>
 
         {/* Add Due Date and Status fields */}
@@ -294,23 +292,21 @@ function CreateInvoice() {
           {items.map((item, index) => (
             <div key={index} className="grid grid-cols-12 gap-4 items-center">
               <div className="col-span-6">
-                <select
+                <SearchableSelect
                   value={item.product}
-                  onChange={(e) =>
-                    handleItemChange(index, "product", e.target.value)
-                  }
-                  className="w-full p-2 border rounded-lg"
-                  required
-                >
-                  <option value="">Select a product</option>
-                  {Array.isArray(products) &&
-                    products.map((product) => (
-                      <option key={product._id} value={product._id}>
-                        {product.name} - ${product.price} (Available:{" "}
-                        {product.quantity})
-                      </option>
-                    ))}
-                </select>
+                  onChange={(val) => handleItemChange(index, "product", val)}
+                  placeholder="Select a product"
+                  searchPlaceholder="Search products..."
+                  emptyMessage="No products found"
+                  options={(Array.isArray(products) ? products : []).map(
+                    (product) => ({
+                      value: product._id,
+                      label: product.name,
+                      description: `$${product.price}`,
+                      meta: `Available: ${product.quantity}`,
+                    })
+                  )}
+                />
               </div>
               <div className="col-span-3">
                 <div className="relative">
@@ -508,7 +504,11 @@ function CreateInvoice() {
         onClose={() => setIsProductModalOpen(false)}
         title="Add New Product"
       >
-        <form onSubmit={handleCreateProduct} className="space-y-6">
+        <form
+          onSubmit={handleCreateProduct}
+          className="space-y-6"
+          encType="multipart/form-data"
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="block text-sm font-semibold text-gray-200">
@@ -591,13 +591,13 @@ function CreateInvoice() {
 
           <div className="space-y-2">
             <label className="block text-sm font-semibold text-gray-200">
-              Image URL
+              Image
             </label>
             <input
-              type="url"
-              name="imageUrl"
-              className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-              placeholder="https://example.com/image.jpg"
+              type="file"
+              name="productImage"
+              accept="image/*"
+              className="w-full px-4 py-2 border border-gray-700 rounded-lg text-sm text-gray-300 file:mr-4 file:rounded-md file:border-0 file:bg-blue-600 file:px-4 file:py-1.5 file:text-sm file:font-medium file:text-white hover:file:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
             />
           </div>
 
