@@ -9,6 +9,18 @@ class AppError extends Error {
     }
 }
 const errorHandler = (err, req, res, next) => {
+    // Normalize common Mongoose errors into clean, operational responses so a bad
+    // ObjectId, validation failure, or duplicate key returns 4xx instead of a 500.
+    if (err.name === 'CastError') {
+        err = new AppError(`Invalid ${err.path}: ${err.value}`, 400);
+    } else if (err.name === 'ValidationError') {
+        const messages = Object.values(err.errors || {}).map((e) => e.message).join('. ');
+        err = new AppError(messages || 'Validation failed', 400);
+    } else if (err.code === 11000) {
+        const field = Object.keys(err.keyValue || {})[0];
+        err = new AppError(`Duplicate value for field: ${field}`, 409);
+    }
+
     err.statusCode = err.statusCode || 500;
     err.status = err.status || 'error';
 

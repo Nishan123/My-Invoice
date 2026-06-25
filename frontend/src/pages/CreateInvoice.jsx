@@ -170,7 +170,9 @@ function CreateInvoice() {
       console.log("Sending invoice data:", invoiceData);
       const response = await invoicesAPI.create(invoiceData);
       toast.success("Invoice created successfully");
-      navigate(`/dashboard/invoices/${response.data._id}`);
+      // The API wraps the new invoice as { status, data }, so the id is at data.data._id.
+      const newInvoiceId = response.data?.data?._id;
+      navigate(newInvoiceId ? `/dashboard/invoices/${newInvoiceId}` : "/dashboard/invoices");
     } catch (err) {
       console.error("Invoice creation error:", err);
       toast.error(

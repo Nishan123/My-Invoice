@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { productsAPI } from "../services/api";
+import { productsAPI, resolveAssetUrl } from "../services/api";
 import { toast } from "react-hot-toast";
 import Modal from "../components/Modal";
 
@@ -139,7 +139,7 @@ function Products() {
             <div className="relative aspect-square">
               {product.imageUrl ? (
                 <img
-                  src={product.imageUrl}
+                  src={resolveAssetUrl(product.imageUrl)}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />

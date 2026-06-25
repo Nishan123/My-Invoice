@@ -1,6 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { invoicesAPI, customersAPI, productsAPI } from "../services/api";
 
+// Endpoints return different shapes: customers send a bare array, while invoices
+// and products wrap their list as { data: [...] } with results/total counts.
+// Pull the count out of whichever shape came back.
+const countOf = (res) => {
+  const body = res?.data;
+  if (Array.isArray(body)) return body.length;
+  if (typeof body?.total === "number") return body.total;
+  if (typeof body?.results === "number") return body.results;
+  if (Array.isArray(body?.data)) return body.data.length;
+  return 0;
+};
+
 function Dashboard() {
   const { data: invoicesData } = useQuery({
     queryKey: ["invoices"],
@@ -25,21 +37,21 @@ function Dashboard() {
         <div className="card">
           <h3 className="text-lg font-semibold mb-2">Total Invoices</h3>
           <p className="text-3xl font-bold text-blue-600">
-            {invoicesData?.data?.length || 0}
+            {countOf(invoicesData)}
           </p>
         </div>
 
         <div className="card">
           <h3 className="text-lg font-semibold mb-2">Total Customers</h3>
           <p className="text-3xl font-bold text-green-600">
-            {customersData?.data?.length || 0}
+            {countOf(customersData)}
           </p>
         </div>
 
         <div className="card">
           <h3 className="text-lg font-semibold mb-2">Total Products</h3>
           <p className="text-3xl font-bold text-purple-600">
-            {productsData?.data?.length || 0}
+            {countOf(productsData)}
           </p>
         </div>
       </div>

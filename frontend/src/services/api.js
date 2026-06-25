@@ -44,6 +44,13 @@ api.interceptors.response.use(
     }
 );
 
+// Backend origin for static assets. Product images are stored as root-relative
+// paths (/uploads/...), so without this the browser resolves them against the
+// SPA origin (Vite :5173) and they 404. Override via VITE_API_URL in production.
+export const ASSET_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+export const resolveAssetUrl = (p) =>
+    !p ? '' : /^https?:\/\//i.test(p) ? p : `${ASSET_BASE_URL}${p}`;
+
 // Auth methods without React Query
 export const authAPI = {
     login: async (credentials) => {
@@ -91,6 +98,12 @@ export const authAPI = {
     resetPassword: (data) => api.post('/users/reset-password', data),
 };
 
+// Product create/update upload a file, so they must send multipart/form-data.
+// Setting Content-Type to null strips this instance's JSON default; axios then
+// keeps the FormData intact and the browser adds the multipart boundary. Without
+// it, axios serializes the FormData to JSON and the image is silently dropped.
+const uploadConfig = { headers: { 'Content-Type': null } };
+
 // Keep other API methods for use with React Query
 export const productsAPI = {
     getAll: async () => {
@@ -104,8 +117,8 @@ export const productsAPI = {
         }
     },
     getOne: (id) => api.get(`/products/${id}`),
-    create: (data) => api.post('/products', data),
-    update: (id, data) => api.put(`/products/${id}`, data),
+    create: (data) => api.post('/products', data, uploadConfig),
+    update: (id, data) => api.put(`/products/${id}`, data, uploadConfig),
     delete: (id) => api.delete(`/products/${id}`),
 };
 
