@@ -157,12 +157,12 @@ function EditInvoice() {
   return (
     <div className="max-w-4xl mx-auto py-8">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">
+        <h1 className="text-2xl font-bold text-gray-100">
           Edit Invoice #{invoice?.formattedInvoiceNumber}
         </h1>
         <button
           onClick={() => navigate("/dashboard/invoices")}
-          className="px-4 py-2 text-sm text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200"
+          className="px-4 py-2 text-sm text-gray-300 bg-gray-800 rounded-lg hover:bg-gray-700"
         >
           Cancel
         </button>
@@ -170,11 +170,11 @@ function EditInvoice() {
 
       <form
         onSubmit={handleSubmit}
-        className="space-y-6 bg-white p-6 rounded-lg shadow"
+        className="space-y-6 bg-gray-900 p-6 rounded-lg border"
       >
         {/* Customer Selection */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-200">
             Customer
           </label>
           <select
@@ -195,7 +195,7 @@ function EditInvoice() {
         {/* Due Date and Status */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-200">
               Due Date
             </label>
             <input
@@ -208,7 +208,7 @@ function EditInvoice() {
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-200">
               Status
             </label>
             <select
@@ -233,7 +233,7 @@ function EditInvoice() {
             <button
               type="button"
               onClick={handleAddItem}
-              className="px-3 py-1 text-sm text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100"
+              className="px-3 py-1 text-sm text-blue-600 bg-blue-950 rounded-lg hover:bg-blue-900"
             >
               Add Item
             </button>
@@ -272,7 +272,7 @@ function EditInvoice() {
                 />
               </div>
               <div className="col-span-2">
-                <span className="block p-2 text-gray-600">
+                <span className="block p-2 text-gray-300">
                   $
                   {(
                     (products.find((p) => p._id === item.product)?.price || 0) *
@@ -285,7 +285,7 @@ function EditInvoice() {
                   <button
                     type="button"
                     onClick={() => handleRemoveItem(index)}
-                    className="text-red-600 hover:text-red-800"
+                    className="text-red-600 hover:text-red-300"
                   >
                     <svg
                       className="w-5 h-5"
@@ -310,7 +310,7 @@ function EditInvoice() {
         {/* Tax Rate and Totals */}
         <div className="border-t pt-4 space-y-4">
           <div className="flex items-center justify-end space-x-4">
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-200">
               Tax Rate (%)
             </label>
             <input
@@ -327,13 +327,13 @@ function EditInvoice() {
           </div>
 
           <div className="space-y-2">
-            <div className="flex justify-end text-gray-600">
+            <div className="flex justify-end text-gray-300">
               <span className="w-32">Subtotal:</span>
               <span className="w-32 text-right">
                 ${calculateTotals().subtotal.toFixed(2)}
               </span>
             </div>
-            <div className="flex justify-end text-gray-600">
+            <div className="flex justify-end text-gray-300">
               <span className="w-32">Tax ({taxRate}%):</span>
               <span className="w-32 text-right">
                 ${calculateTotals().taxAmount.toFixed(2)}

@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    background-color: #000000;
+    color: #e5e7eb; /* gray-200 */
+  }
+}
+
+@layer components {
+  /* Used by the dashboard stat cards. Light border instead of a drop shadow. */
+  .card {
+    @apply bg-gray-900 border border-gray-800 rounded-xl p-6;
+  }
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -12,7 +29,7 @@
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  border: 3px solid #e5e7eb;
-  border-top-color: #3b82f6;
+  border: 3px solid #374151; /* gray-700 */
+  border-top-color: #3b82f6; /* blue-500 */
   animation: spin 1s linear infinite;
 }

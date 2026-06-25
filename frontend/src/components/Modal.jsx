@@ -28,14 +28,14 @@ function Modal({ isOpen, onClose, title, children }) {
       onClick={handleBackdropClick}
     >
       <div
-        className="bg-white rounded-xl w-full max-w-md shadow-xl"
+        className="bg-gray-900 rounded-xl w-full max-w-md border"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center p-6 border-b border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+        <div className="flex justify-between items-center p-6 border-b border-gray-800">
+          <h3 className="text-lg font-semibold text-gray-50">{title}</h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-500 p-2 hover:bg-gray-50 rounded-lg transition-colors"
+            className="text-gray-500 hover:text-gray-400 p-2 hover:bg-gray-800 rounded-lg transition-colors"
           >
             <X size={20} />
           </button>

@@ -192,10 +192,10 @@ function CreateInvoice() {
   return (
     <div className="max-w-4xl mx-auto py-8">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Create New Invoice</h1>
+        <h1 className="text-2xl font-bold text-gray-100">Create New Invoice</h1>
         <button
           onClick={() => navigate("/dashboard/invoices")}
-          className="px-4 py-2 text-sm text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200"
+          className="px-4 py-2 text-sm text-gray-300 bg-gray-800 rounded-lg hover:bg-gray-700"
         >
           Cancel
         </button>
@@ -203,12 +203,12 @@ function CreateInvoice() {
 
       <form
         onSubmit={handleSubmit}
-        className="space-y-6 bg-white p-6 rounded-lg shadow"
+        className="space-y-6 bg-gray-900 p-6 rounded-lg border"
       >
         {/* Customer Selection with Add Customer Button */}
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-200">
               Customer
             </label>
             <button
@@ -237,27 +237,27 @@ function CreateInvoice() {
         {/* Add Due Date and Status fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-200">
               Due Date
             </label>
             <input
               type="date"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               required
               min={new Date().toISOString().split("T")[0]}
             />
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-200">
               Status
             </label>
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               required
             >
               {STATUS_OPTIONS.map((option) => (
@@ -277,14 +277,14 @@ function CreateInvoice() {
               <button
                 type="button"
                 onClick={() => setIsProductModalOpen(true)}
-                className="px-3 py-1 text-sm text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100"
+                className="px-3 py-1 text-sm text-blue-600 bg-blue-950 rounded-lg hover:bg-blue-900"
               >
                 + Add New Product
               </button>
               <button
                 type="button"
                 onClick={handleAddItem}
-                className="px-3 py-1 text-sm text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100"
+                className="px-3 py-1 text-sm text-blue-600 bg-blue-950 rounded-lg hover:bg-blue-900"
               >
                 Add Item
               </button>
@@ -325,13 +325,13 @@ function CreateInvoice() {
                       item.quantity >
                       (products.find((p) => p._id === item.product)?.quantity ||
                         0)
-                        ? "border-yellow-400 bg-yellow-50"
+                        ? "border-yellow-700 bg-yellow-950"
                         : ""
                     }`}
                     placeholder="Quantity"
                     required
                   />
-                  <span className="absolute right-2 top-2 text-xs text-gray-500">
+                  <span className="absolute right-2 top-2 text-xs text-gray-400">
                     Available:{" "}
                     {products.find((p) => p._id === item.product)?.quantity ||
                       0}
@@ -339,7 +339,7 @@ function CreateInvoice() {
                 </div>
               </div>
               <div className="col-span-2">
-                <span className="block p-2 text-gray-600">
+                <span className="block p-2 text-gray-300">
                   $
                   {(
                     (products.find((p) => p._id === item.product)?.price || 0) *
@@ -352,7 +352,7 @@ function CreateInvoice() {
                   <button
                     type="button"
                     onClick={() => handleRemoveItem(index)}
-                    className="text-red-600 hover:text-red-800"
+                    className="text-red-600 hover:text-red-300"
                   >
                     <svg
                       className="w-5 h-5"
@@ -377,7 +377,7 @@ function CreateInvoice() {
         {/* Add Tax Rate field before totals */}
         <div className="border-t pt-4 space-y-4">
           <div className="flex items-center justify-end space-x-4">
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-200">
               Tax Rate (%)
             </label>
             <input
@@ -386,7 +386,7 @@ function CreateInvoice() {
               onChange={(e) =>
                 setTaxRate(Math.max(0, Math.min(100, Number(e.target.value))))
               }
-              className="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-24 px-3 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               min="0"
               max="100"
               step="0.1"
@@ -395,13 +395,13 @@ function CreateInvoice() {
 
           {/* Totals section */}
           <div className="space-y-2">
-            <div className="flex justify-end text-gray-600">
+            <div className="flex justify-end text-gray-300">
               <span className="w-32">Subtotal:</span>
               <span className="w-32 text-right">
                 ${calculateTotals().subtotal.toFixed(2)}
               </span>
             </div>
-            <div className="flex justify-end text-gray-600">
+            <div className="flex justify-end text-gray-300">
               <span className="w-32">Tax ({taxRate}%):</span>
               <span className="w-32 text-right">
                 ${calculateTotals().taxAmount.toFixed(2)}
@@ -436,50 +436,50 @@ function CreateInvoice() {
         <form onSubmit={handleCreateCustomer} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-200">
                 Name
               </label>
               <input
                 type="text"
                 name="name"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-200">
                 Email
               </label>
               <input
                 type="email"
                 name="email"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-200">
                 Phone
               </label>
               <input
                 type="tel"
                 name="phone"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 required
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-200">
               Address
             </label>
             <textarea
               name="address"
               rows="3"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               required
             />
           </div>
@@ -488,7 +488,7 @@ function CreateInvoice() {
             <button
               type="button"
               onClick={() => setIsCustomerModalOpen(false)}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-4 py-2 text-sm font-medium text-gray-200 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
             >
               Cancel
             </button>
@@ -511,13 +511,13 @@ function CreateInvoice() {
         <form onSubmit={handleCreateProduct} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-700">
+              <label className="block text-sm font-semibold text-gray-200">
                 Name
               </label>
               <input
                 type="text"
                 name="name"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 required
                 minLength="2"
                 maxLength="100"
@@ -525,12 +525,12 @@ function CreateInvoice() {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-700">
+              <label className="block text-sm font-semibold text-gray-200">
                 Category
               </label>
               <select
                 name="category"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 required
               >
                 <option value="" disabled selected>
@@ -547,30 +547,30 @@ function CreateInvoice() {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-700">
+              <label className="block text-sm font-semibold text-gray-200">
                 Price
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-2 text-gray-500">$</span>
+                <span className="absolute left-3 top-2 text-gray-400">$</span>
                 <input
                   type="number"
                   name="price"
                   step="0.01"
                   min="0"
-                  className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  className="w-full pl-8 pr-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                   required
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-700">
+              <label className="block text-sm font-semibold text-gray-200">
                 Quantity
               </label>
               <input
                 type="number"
                 name="quantity"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 required
                 min="0"
               />
@@ -578,25 +578,25 @@ function CreateInvoice() {
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-semibold text-gray-700">
+            <label className="block text-sm font-semibold text-gray-200">
               Description
             </label>
             <textarea
               name="description"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               rows="4"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-semibold text-gray-700">
+            <label className="block text-sm font-semibold text-gray-200">
               Image URL
             </label>
             <input
               type="url"
               name="imageUrl"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               placeholder="https://example.com/image.jpg"
             />
           </div>
@@ -605,7 +605,7 @@ function CreateInvoice() {
             <button
               type="button"
               onClick={() => setIsProductModalOpen(false)}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-4 py-2 text-sm font-medium text-gray-200 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
             >
               Cancel
             </button>

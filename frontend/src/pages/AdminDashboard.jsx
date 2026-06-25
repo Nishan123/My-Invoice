@@ -24,20 +24,20 @@ function AdminDashboard() {
     const formatLogLevel = (log) => {
         if (log.type === 'request') {
             const statusCode = log.fingerprint.statusCode;
-            if (statusCode < 300) return { level: 'SUCCESS', class: 'bg-green-100 text-green-800' };
-            if (statusCode < 400) return { level: 'REDIRECT', class: 'bg-blue-100 text-blue-800' };
-            if (statusCode < 500) return { level: 'CLIENT ERROR', class: 'bg-yellow-100 text-yellow-800' };
-            return { level: 'SERVER ERROR', class: 'bg-red-100 text-red-800' };
+            if (statusCode < 300) return { level: 'SUCCESS', class: 'bg-green-900 text-green-300' };
+            if (statusCode < 400) return { level: 'REDIRECT', class: 'bg-blue-900 text-blue-300' };
+            if (statusCode < 500) return { level: 'CLIENT ERROR', class: 'bg-yellow-900 text-yellow-300' };
+            return { level: 'SERVER ERROR', class: 'bg-red-900 text-red-300' };
         }
         
         return {
             level: log.level === 30 ? 'INFO' :
                    log.level === 40 ? 'WARN' :
                    log.level === 50 ? 'ERROR' : 'DEBUG',
-            class: log.level === 30 ? 'bg-green-100 text-green-800' :
-                   log.level === 40 ? 'bg-yellow-100 text-yellow-800' :
-                   log.level === 50 ? 'bg-red-100 text-red-800' :
-                   'bg-gray-100 text-gray-800'
+            class: log.level === 30 ? 'bg-green-900 text-green-300' :
+                   log.level === 40 ? 'bg-yellow-900 text-yellow-300' :
+                   log.level === 50 ? 'bg-red-900 text-red-300' :
+                   'bg-gray-800 text-gray-100'
         };
     };
 
@@ -46,29 +46,29 @@ function AdminDashboard() {
 
     return (
         <div className="space-y-6 relative">
-            <h2 className="text-2xl font-bold text-gray-800">System Logs</h2>
+            <h2 className="text-2xl font-bold text-gray-100">System Logs</h2>
 
             <div className="overflow-x-auto">
-                <table className="min-w-full bg-white shadow-sm rounded-lg">
-                    <thead className="bg-gray-50">
+                <table className="min-w-full bg-gray-900 border rounded-lg">
+                    <thead className="bg-gray-800">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Level</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Message</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IP</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User Agent</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Time</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Level</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Message</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">User</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">IP</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Location</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">User Agent</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="divide-y divide-gray-800">
                         {logsData?.data?.map((log, index) => (
                             <tr 
                                 key={index}
                                 onClick={() => handleRowClick(log)}
-                                className="hover:bg-gray-50 cursor-pointer transition-colors"
+                                className="hover:bg-gray-800 cursor-pointer transition-colors"
                             >
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                                     {new Date(log.time).toLocaleString()}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm">
@@ -76,30 +76,30 @@ function AdminDashboard() {
                                         {formatLogLevel(log).level}
                                     </span>
                                 </td>
-                                <td className="px-6 py-4 text-sm text-gray-500">
+                                <td className="px-6 py-4 text-sm text-gray-400">
                                     {log.msg}
                                 </td>
-                                <td className="px-6 py-4 text-sm text-gray-500">
+                                <td className="px-6 py-4 text-sm text-gray-400">
                                     {log.fingerprint?.user ? (
                                         <div className="flex flex-col">
                                             <span className="font-medium">{log.fingerprint.user.email}</span>
-                                            <span className="text-xs text-gray-400">
+                                            <span className="text-xs text-gray-500">
                                                 {log.fingerprint.user.role}
                                             </span>
                                         </div>
                                     ) : (
-                                        <span className="text-gray-400">Guest</span>
+                                        <span className="text-gray-500">Guest</span>
                                     )}
                                 </td>
-                                <td className="px-6 py-4 text-sm text-gray-500">
+                                <td className="px-6 py-4 text-sm text-gray-400">
                                     {log.fingerprint?.ip || 'N/A'}
                                 </td>
-                                <td className="px-6 py-4 text-sm text-gray-500">
+                                <td className="px-6 py-4 text-sm text-gray-400">
                                     {log.fingerprint?.location ? 
                                         `${log.fingerprint.location.city}, ${log.fingerprint.location.country}` 
                                         : 'N/A'}
                                 </td>
-                                <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
+                                <td className="px-6 py-4 text-sm text-gray-400 max-w-xs truncate">
                                     {log.fingerprint?.userAgent || 'N/A'}
                                 </td>
                             </tr>
@@ -130,13 +130,13 @@ function AdminDashboard() {
             {/* Log Detail Modal */}
             {selectedLog && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[80vh] overflow-y-auto">
+                    <div className="bg-gray-900 rounded-lg border w-full max-w-4xl max-h-[80vh] overflow-y-auto">
                         <div className="p-6">
                             <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-lg font-semibold text-gray-900">Log Details</h3>
+                                <h3 className="text-lg font-semibold text-gray-50">Log Details</h3>
                                 <button
                                     onClick={() => setSelectedLog(null)}
-                                    className="text-gray-500 hover:text-gray-700"
+                                    className="text-gray-400 hover:text-gray-200"
                                 >
                                     <X size={20} />
                                 </button>
@@ -145,13 +145,13 @@ function AdminDashboard() {
                             <div className="space-y-4">
                                 {/* Time */}
                                 <div>
-                                    <h4 className="text-sm font-medium text-gray-500">Timestamp</h4>
+                                    <h4 className="text-sm font-medium text-gray-400">Timestamp</h4>
                                     <p className="mt-1">{new Date(selectedLog.time).toLocaleString()}</p>
                                 </div>
 
                                 {/* Level */}
                                 <div>
-                                    <h4 className="text-sm font-medium text-gray-500">Level</h4>
+                                    <h4 className="text-sm font-medium text-gray-400">Level</h4>
                                     <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${formatLogLevel(selectedLog).class}`}>
                                         {formatLogLevel(selectedLog).level}
                                     </span>
@@ -159,13 +159,13 @@ function AdminDashboard() {
 
                                 {/* Message */}
                                 <div>
-                                    <h4 className="text-sm font-medium text-gray-500">Message</h4>
+                                    <h4 className="text-sm font-medium text-gray-400">Message</h4>
                                     <p className="mt-1">{selectedLog.msg}</p>
                                 </div>
 
                                 {/* User Info */}
                                 <div>
-                                    <h4 className="text-sm font-medium text-gray-500">User Information</h4>
+                                    <h4 className="text-sm font-medium text-gray-400">User Information</h4>
                                     {selectedLog.fingerprint?.user ? (
                                         <div className="mt-1">
                                             <p>Email: {selectedLog.fingerprint.user.email}</p>
@@ -173,13 +173,13 @@ function AdminDashboard() {
                                             <p>ID: {selectedLog.fingerprint.user.id}</p>
                                         </div>
                                     ) : (
-                                        <p className="mt-1 text-gray-500">Guest User</p>
+                                        <p className="mt-1 text-gray-400">Guest User</p>
                                     )}
                                 </div>
 
                                 {/* Request Details */}
                                 <div>
-                                    <h4 className="text-sm font-medium text-gray-500">Request Details</h4>
+                                    <h4 className="text-sm font-medium text-gray-400">Request Details</h4>
                                     <div className="mt-1 space-y-2">
                                         <p>Method: {selectedLog.fingerprint?.method}</p>
                                         <p>URL: {selectedLog.fingerprint?.url}</p>
@@ -193,7 +193,7 @@ function AdminDashboard() {
                                 {/* Location */}
                                 {selectedLog.fingerprint?.location && (
                                     <div>
-                                        <h4 className="text-sm font-medium text-gray-500">Location</h4>
+                                        <h4 className="text-sm font-medium text-gray-400">Location</h4>
                                         <div className="mt-1">
                                             <p>City: {selectedLog.fingerprint.location.city}</p>
                                             <p>Region: {selectedLog.fingerprint.location.region}</p>

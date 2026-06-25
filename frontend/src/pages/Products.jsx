@@ -98,7 +98,7 @@ function Products() {
   if (error) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-200px)]">
-        <div className="text-red-600 bg-red-50 p-4 rounded-lg">
+        <div className="text-red-600 bg-red-950 p-4 rounded-lg">
           Error: {error}
         </div>
       </div>
@@ -108,7 +108,7 @@ function Products() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-800">Products</h2>
+        <h2 className="text-2xl font-bold text-gray-100">Products</h2>
         <button
           onClick={() => setIsModalOpen(true)}
           className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
@@ -134,7 +134,7 @@ function Products() {
         {products.map((product) => (
           <div
             key={product._id}
-            className="bg-white rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-105"
+            className="bg-gray-900 rounded-xl border overflow-hidden transition-transform hover:scale-105"
           >
             <div className="relative aspect-square">
               {product.imageUrl ? (
@@ -144,8 +144,8 @@ function Products() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                  <span className="text-gray-400">No image</span>
+                <div className="w-full h-full bg-gray-700 flex items-center justify-center">
+                  <span className="text-gray-500">No image</span>
                 </div>
               )}
               <span className="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded-full text-xs">
@@ -154,17 +154,17 @@ function Products() {
             </div>
 
             <div className="p-4">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2 truncate">
+              <h3 className="text-lg font-semibold text-gray-100 mb-2 truncate">
                 {product.name}
               </h3>
-              <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+              <p className="text-gray-300 text-sm mb-3 line-clamp-2">
                 {product.description}
               </p>
               <div className="flex justify-between items-center mb-3">
                 <p className="text-xl font-bold text-blue-600">
                   ${product.price.toFixed(2)}
                 </p>
-                <span className="text-sm bg-gray-100 text-gray-700 px-2 py-1 rounded-full">
+                <span className="text-sm bg-gray-800 text-gray-200 px-2 py-1 rounded-full">
                   Stock: {product.quantity}
                 </span>
               </div>
@@ -208,14 +208,14 @@ function Products() {
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-700">
+              <label className="block text-sm font-semibold text-gray-200">
                 Name
               </label>
               <input
                 type="text"
                 name="name"
                 defaultValue={editingProduct?.name}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 required
                 minLength="2"
                 maxLength="100"
@@ -223,13 +223,13 @@ function Products() {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-700">
+              <label className="block text-sm font-semibold text-gray-200">
                 Category
               </label>
               <select
                 name="category"
                 defaultValue={editingProduct?.category || ""}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 required
               >
                 <option value="" disabled>
@@ -244,17 +244,17 @@ function Products() {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-700">
+              <label className="block text-sm font-semibold text-gray-200">
                 Price
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-2 text-gray-500">$</span>
+                <span className="absolute left-3 top-2 text-gray-400">$</span>
                 <input
                   type="number"
                   name="price"
                   step="0.01"
                   defaultValue={editingProduct?.price}
-                  className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  className="w-full pl-8 pr-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                   required
                   min="0"
                 />
@@ -262,14 +262,14 @@ function Products() {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-700">
+              <label className="block text-sm font-semibold text-gray-200">
                 Quantity
               </label>
               <input
                 type="number"
                 name="quantity"
                 defaultValue={editingProduct?.quantity}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 required
                 min="0"
               />
@@ -277,27 +277,27 @@ function Products() {
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-semibold text-gray-700">
+            <label className="block text-sm font-semibold text-gray-200">
               Description
             </label>
             <textarea
               name="description"
               defaultValue={editingProduct?.description}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               rows="4"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-semibold text-gray-700">
+            <label className="block text-sm font-semibold text-gray-200">
               Image
             </label>
             <input
               type="file"
               name="productImage"
               accept="image/*"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
             />
           </div>
 
@@ -308,7 +308,7 @@ function Products() {
                 setIsModalOpen(false);
                 setEditingProduct(null);
               }}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-4 py-2 text-sm font-medium text-gray-200 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
             >
               Cancel
             </button>
@@ -332,7 +332,7 @@ function Products() {
       >
         <div className="space-y-6">
           <div className="text-center">
-            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-900 mb-4">
               <svg
                 className="h-6 w-6 text-red-600"
                 fill="none"
@@ -347,10 +347,10 @@ function Products() {
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900">
+            <h3 className="text-lg font-medium text-gray-50">
               Delete Product
             </h3>
-            <p className="mt-2 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-gray-400">
               Are you sure you want to delete &ldquo;{productToDelete?.name}
               &rdquo;? This action cannot be undone.
             </p>
@@ -361,7 +361,7 @@ function Products() {
                 setIsDeleteModalOpen(false);
                 setProductToDelete(null);
               }}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-4 py-2 text-sm font-medium text-gray-200 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
             >
               Cancel
             </button>

@@ -3,6 +3,9 @@ import { invoicesAPI } from "../services/api";
 import { toast } from "react-hot-toast";
 import Modal from "../components/Modal";
 import { useNavigate } from "react-router-dom";
+import { ChevronDown } from "lucide-react";
+
+const STATUS_OPTIONS = ["pending", "paid", "overdue"];
 
 function Invoices() {
   const [invoices, setInvoices] = useState([]);
@@ -71,16 +74,35 @@ function Invoices() {
     }
   };
 
+  const handleStatusChange = async (invoiceId, newStatus) => {
+    const previous = invoices;
+    // Optimistic update so the pill changes instantly; revert if the request fails.
+    setInvoices((cur) =>
+      cur.map((inv) =>
+        inv._id === invoiceId ? { ...inv, status: newStatus } : inv
+      )
+    );
+    try {
+      await invoicesAPI.updatePaymentStatus(invoiceId, newStatus);
+      toast.success(`Marked as ${newStatus}`);
+    } catch (err) {
+      setInvoices(previous);
+      toast.error(
+        err.response?.data?.message || err.message || "Failed to update status"
+      );
+    }
+  };
+
   const handleInvoiceClick = (invoiceId) => {
     navigate(`/dashboard/invoices/${invoiceId}`);
   };
 
   function getStatusStyle(status) {
     const styles = {
-      paid: "bg-green-100 text-green-800 border border-green-200",
-      pending: "bg-yellow-100 text-yellow-800 border border-yellow-200",
-      overdue: "bg-red-100 text-red-800 border border-red-200",
-      draft: "bg-gray-100 text-gray-800 border border-gray-200",
+      paid: "bg-green-900 text-green-300 border border-green-800",
+      pending: "bg-yellow-900 text-yellow-300 border border-yellow-800",
+      overdue: "bg-red-900 text-red-300 border border-red-800",
+      draft: "bg-gray-800 text-gray-100 border border-gray-800",
     };
     return styles[status] || styles.pending;
   }
@@ -96,7 +118,7 @@ function Invoices() {
   if (error) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-200px)]">
-        <div className="text-red-600 bg-red-50 p-4 rounded-lg">
+        <div className="text-red-600 bg-red-950 p-4 rounded-lg">
           Error: {error}
         </div>
       </div>
@@ -106,7 +128,7 @@ function Invoices() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-800">Invoices</h2>
+        <h2 className="text-2xl font-bold text-gray-100">Invoices</h2>
         <button
           onClick={() => navigate("/dashboard/invoices/create")}
           className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
@@ -132,33 +154,50 @@ function Invoices() {
         {invoices.map((invoice) => (
           <div
             key={invoice._id}
-            className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all duration-200 cursor-pointer"
+            className="bg-gray-900 rounded-xl border border border-gray-800 overflow-hidden  transition-all duration-200 cursor-pointer"
             onClick={() => handleInvoiceClick(invoice._id)}
           >
             <div className="p-5">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-800">
+                  <h3 className="text-lg font-semibold text-gray-100">
                     #{invoice.formattedInvoiceNumber || invoice.invoiceNumber}
                   </h3>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-400">
                     Created: {new Date(invoice.createdAt).toLocaleDateString()}
                   </p>
                 </div>
-                <span
-                  className={`px-3 py-1 text-xs font-medium rounded-full ${getStatusStyle(
-                    invoice.status
-                  )}`}
+                <div
+                  className="relative shrink-0"
+                  onClick={(e) => e.stopPropagation()}
                 >
-                  {invoice.status.charAt(0).toUpperCase() +
-                    invoice.status.slice(1)}
-                </span>
+                  <select
+                    value={invoice.status}
+                    title="Update status"
+                    onChange={(e) =>
+                      handleStatusChange(invoice._id, e.target.value)
+                    }
+                    className={`appearance-none cursor-pointer pl-3 pr-7 py-1 text-xs font-medium rounded-full capitalize focus:outline-none focus:ring-2 focus:ring-blue-500 ${getStatusStyle(
+                      invoice.status
+                    )}`}
+                  >
+                    {STATUS_OPTIONS.map((s) => (
+                      <option key={s} value={s} className="bg-gray-900 text-gray-100">
+                        {s.charAt(0).toUpperCase() + s.slice(1)}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown
+                    size={14}
+                    className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 opacity-70"
+                  />
+                </div>
               </div>
 
-              <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+              <div className="mb-4 p-3 bg-gray-800 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
                   <svg
-                    className="w-4 h-4 text-gray-500"
+                    className="w-4 h-4 text-gray-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -170,30 +209,30 @@ function Invoices() {
                       d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
                     />
                   </svg>
-                  <span className="font-medium text-gray-700">
+                  <span className="font-medium text-gray-200">
                     {invoice.customer?.name}
                   </span>
                 </div>
-                <div className="text-sm text-gray-600">
+                <div className="text-sm text-gray-300">
                   <p className="truncate">{invoice.customer?.email}</p>
                 </div>
               </div>
 
               <div className="space-y-2 mb-4">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Items:</span>
+                  <span className="text-gray-300">Items:</span>
                   <span className="font-medium">
                     {invoice.products?.length || 0}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Subtotal:</span>
+                  <span className="text-gray-300">Subtotal:</span>
                   <span className="font-medium">
                     ${invoice.subtotal?.toFixed(2)}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">
+                  <span className="text-gray-300">
                     Tax ({invoice.taxRate}%):
                   </span>
                   <span className="font-medium">
@@ -201,7 +240,7 @@ function Invoices() {
                   </span>
                 </div>
                 <div className="flex justify-between text-base font-semibold border-t pt-2 mt-2">
-                  <span className="text-gray-800">Total:</span>
+                  <span className="text-gray-100">Total:</span>
                   <span className="text-blue-600">
                     ${invoice.total?.toFixed(2)}
                   </span>
@@ -209,7 +248,7 @@ function Invoices() {
               </div>
 
               <div className="flex items-center justify-between text-sm mb-4">
-                <div className="flex items-center gap-1 text-gray-600">
+                <div className="flex items-center gap-1 text-gray-300">
                   <svg
                     className="w-4 h-4"
                     fill="none"
@@ -230,7 +269,7 @@ function Invoices() {
                     new Date(invoice.dueDate) < new Date() &&
                     invoice.status !== "paid"
                       ? "text-red-600"
-                      : "text-gray-800"
+                      : "text-gray-100"
                   }`}
                 >
                   {new Date(invoice.dueDate).toLocaleDateString()}
@@ -243,7 +282,7 @@ function Invoices() {
                     e.stopPropagation();
                     navigate(`/dashboard/invoices/${invoice._id}/edit`);
                   }}
-                  className="px-3 py-1.5 text-sm text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+                  className="px-3 py-1.5 text-sm text-blue-600 bg-blue-950 rounded-lg hover:bg-blue-900 transition-colors"
                 >
                   Edit
                 </button>
@@ -253,7 +292,7 @@ function Invoices() {
                     setInvoiceToDelete(invoice);
                     setIsDeleteModalOpen(true);
                   }}
-                  className="px-3 py-1.5 text-sm text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+                  className="px-3 py-1.5 text-sm text-red-600 bg-red-950 rounded-lg hover:bg-red-900 transition-colors"
                 >
                   Delete
                 </button>
@@ -281,7 +320,7 @@ function Invoices() {
                 setIsModalOpen(false);
                 setEditingInvoice(null);
               }}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-4 py-2 text-sm font-medium text-gray-200 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
             >
               Cancel
             </button>
@@ -305,7 +344,7 @@ function Invoices() {
       >
         <div className="space-y-6">
           <div className="text-center">
-            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-900 mb-4">
               <svg
                 className="h-6 w-6 text-red-600"
                 fill="none"
@@ -320,10 +359,10 @@ function Invoices() {
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900">
+            <h3 className="text-lg font-medium text-gray-50">
               Delete Invoice
             </h3>
-            <p className="mt-2 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-gray-400">
               Are you sure you want to delete Invoice #
               {invoiceToDelete?.invoiceNumber}? This action cannot be undone.
             </p>
@@ -335,7 +374,7 @@ function Invoices() {
                 setIsDeleteModalOpen(false);
                 setInvoiceToDelete(null);
               }}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-4 py-2 text-sm font-medium text-gray-200 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
             >
               Cancel
             </button>

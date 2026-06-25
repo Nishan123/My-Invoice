@@ -70,8 +70,8 @@ function InvoiceView() {
 
   const renderCustomerDetails = () => (
     <div>
-      <h2 className="text-gray-500 font-medium mb-2">Bill To</h2>
-      <div className="text-gray-800">
+      <h2 className="text-gray-400 font-medium mb-2">Bill To</h2>
+      <div className="text-gray-100">
         <p className="font-bold">{invoice.customer?.name || "N/A"}</p>
         <p>{invoice.customer?.address || "N/A"}</p>
         <p>{invoice.customer?.email || "N/A"}</p>
@@ -82,8 +82,8 @@ function InvoiceView() {
 
   const renderBusinessDetails = () => (
     <div>
-      <h2 className="text-gray-500 font-medium mb-2">From</h2>
-      <div className="text-gray-800">
+      <h2 className="text-gray-400 font-medium mb-2">From</h2>
+      <div className="text-gray-100">
         <p className="font-bold">
           {invoice.user?.businessInfo?.name || businessInfo?.name || "N/A"}
         </p>
@@ -111,12 +111,12 @@ function InvoiceView() {
   const renderProducts = () => (
     <tbody>
       {invoice.products?.map((item, index) => (
-        <tr key={index} className="border-b border-gray-200">
+        <tr key={index} className="border-b border-gray-800">
           <td className="py-4">
-            <p className="font-medium text-gray-800">
+            <p className="font-medium text-gray-100">
               {item.product?.name || "N/A"}
             </p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-400">
               {item.product?.description || ""}
             </p>
           </td>
@@ -131,19 +131,19 @@ function InvoiceView() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
+    <div className="min-h-screen bg-gray-800 py-8">
       <div className="max-w-4xl mx-auto">
         {/* Action Buttons */}
         <div className="mb-6 flex justify-end space-x-4">
           <button
             onClick={handleBackClick}
-            className="px-4 py-2 text-sm font-medium text-gray-600 bg-white rounded-lg hover:bg-gray-50 border border-gray-200 shadow-sm"
+            className="px-4 py-2 text-sm font-medium text-gray-300 bg-gray-900 rounded-lg hover:bg-gray-800 border border-gray-800 border"
           >
             Back to Invoices
           </button>
           <button
             onClick={handleDownloadPDF}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm flex items-center space-x-2"
+            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 border flex items-center space-x-2"
           >
             <svg
               className="w-4 h-4"
@@ -163,23 +163,23 @@ function InvoiceView() {
         </div>
 
         {/* Invoice Content */}
-        <div ref={invoiceRef} className="bg-white shadow-lg rounded-lg p-8">
+        <div ref={invoiceRef} className="bg-gray-900 border rounded-lg p-8">
           {/* Header */}
           <div className="flex justify-between items-start mb-8">
             <div>
               <img src={logo} alt="Company Logo" className="h-12 mb-4" />
-              <h1 className="text-2xl font-bold text-gray-800">INVOICE</h1>
-              <p className="text-gray-500">#{invoice.formattedInvoiceNumber}</p>
+              <h1 className="text-2xl font-bold text-gray-100">INVOICE</h1>
+              <p className="text-gray-400">#{invoice.formattedInvoiceNumber}</p>
             </div>
             <div className="text-right">
               <div className="mb-4">
-                <p className="text-gray-500">Issue Date</p>
+                <p className="text-gray-400">Issue Date</p>
                 <p className="font-medium">
                   {new Date(invoice.createdAt).toLocaleDateString()}
                 </p>
               </div>
               <div>
-                <p className="text-gray-500">Due Date</p>
+                <p className="text-gray-400">Due Date</p>
                 <p className="font-medium text-amber-600">
                   {new Date(invoice.dueDate).toLocaleDateString()}
                 </p>
@@ -192,10 +192,10 @@ function InvoiceView() {
             <span
               className={`px-3 py-1 rounded-full text-sm font-medium ${
                 invoice.status === "paid"
-                  ? "bg-green-100 text-green-800"
+                  ? "bg-green-900 text-green-300"
                   : invoice.status === "pending"
-                  ? "bg-yellow-100 text-yellow-800"
-                  : "bg-red-100 text-red-800"
+                  ? "bg-yellow-900 text-yellow-300"
+                  : "bg-red-900 text-red-300"
               }`}
             >
               {invoice.status.toUpperCase()}
@@ -211,32 +211,32 @@ function InvoiceView() {
           {/* Items Table */}
           <table className="w-full mb-8">
             <thead>
-              <tr className="border-b border-gray-200">
-                <th className="py-3 text-left text-gray-600">Item</th>
-                <th className="py-3 text-right text-gray-600">Price</th>
-                <th className="py-3 text-right text-gray-600">Quantity</th>
-                <th className="py-3 text-right text-gray-600">Total</th>
+              <tr className="border-b border-gray-800">
+                <th className="py-3 text-left text-gray-300">Item</th>
+                <th className="py-3 text-right text-gray-300">Price</th>
+                <th className="py-3 text-right text-gray-300">Quantity</th>
+                <th className="py-3 text-right text-gray-300">Total</th>
               </tr>
             </thead>
             {renderProducts()}
           </table>
 
           {/* Summary */}
-          <div className="border-t border-gray-200 pt-8">
+          <div className="border-t border-gray-800 pt-8">
             <div className="w-full md:w-1/2 ml-auto">
               <div className="flex justify-between mb-3">
-                <span className="text-gray-600">Subtotal</span>
+                <span className="text-gray-300">Subtotal</span>
                 <span className="font-medium">
                   ${invoice.subtotal.toFixed(2)}
                 </span>
               </div>
               <div className="flex justify-between mb-3">
-                <span className="text-gray-600">Tax ({invoice.taxRate}%)</span>
+                <span className="text-gray-300">Tax ({invoice.taxRate}%)</span>
                 <span className="font-medium">
                   ${invoice.taxAmount.toFixed(2)}
                 </span>
               </div>
-              <div className="flex justify-between border-t border-gray-200 pt-3">
+              <div className="flex justify-between border-t border-gray-800 pt-3">
                 <span className="text-lg font-bold">Total</span>
                 <span className="text-lg font-bold">
                   ${invoice.total.toFixed(2)}
@@ -246,8 +246,8 @@ function InvoiceView() {
           </div>
 
           {/* Footer */}
-          <div className="mt-8 pt-8 border-t border-gray-200">
-            <div className="text-center text-gray-500">
+          <div className="mt-8 pt-8 border-t border-gray-800">
+            <div className="text-center text-gray-400">
               <p className="mb-2">Thank you for your business!</p>
               <p className="text-sm">
                 Invoice created on{" "}

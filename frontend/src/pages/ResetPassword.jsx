@@ -47,17 +47,17 @@ function ResetPassword() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-black via-white to-gray-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-50">
           Reset your password
         </h2>
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="bg-gray-900 py-8 px-4 border sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-200">
                 Email address
               </label>
               <div className="mt-1">
@@ -68,13 +68,13 @@ function ResetPassword() {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+                  className="block w-full appearance-none rounded-md border border-gray-700 px-3 py-2 border placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="newPassword" className="block text-sm font-medium text-gray-200">
                 New Password
               </label>
               <div className="mt-1">
@@ -85,13 +85,13 @@ function ResetPassword() {
                   required
                   value={formData.newPassword}
                   onChange={handleChange}
-                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+                  className="block w-full appearance-none rounded-md border border-gray-700 px-3 py-2 border placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-200">
                 Confirm Password
               </label>
               <div className="mt-1">
@@ -102,7 +102,7 @@ function ResetPassword() {
                   required
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+                  className="block w-full appearance-none rounded-md border border-gray-700 px-3 py-2 border placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
                 />
               </div>
             </div>
@@ -110,7 +110,7 @@ function ResetPassword() {
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="flex w-full justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white border hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
                 Reset Password
               </button>

@@ -4,6 +4,9 @@ import { useMutation } from "@tanstack/react-query";
 import { authAPI } from "../services/api";
 import toast from "react-hot-toast";
 
+const inputClass =
+  "block w-full rounded-lg bg-white/5 border border-white/10 px-3.5 py-2.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition";
+
 function Register() {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -99,215 +102,192 @@ function Register() {
     registerMutation.mutate(registerData);
   };
 
+  const checkItem = (ok) => (ok ? "text-emerald-400" : "text-gray-500");
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h1 className="text-center text-3xl font-bold">
-          <span className="text-blue-600">Invoice</span> Sathi
-        </h1>
-        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+    <div className="relative min-h-screen bg-black text-gray-200 font-sans flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -top-32 -left-24 w-[28rem] h-[28rem] bg-blue-600/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-24 -right-16 w-[26rem] h-[26rem] bg-indigo-600/20 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.05)_1px,transparent_0)] [background-size:34px_34px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_40%,black,transparent)]" />
+      </div>
+
+      <div className="relative sm:mx-auto sm:w-full sm:max-w-md text-center">
+        <Link to="/" className="text-3xl font-display font-bold text-white">
+          <span className="text-blue-500">My</span>-Invoice
+        </Link>
+        <h2 className="mt-6 font-display text-3xl font-bold tracking-tight text-white">
           Create your account
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
+        <p className="mt-2 text-sm text-gray-400">
           Already have an account?{" "}
           <Link
             to="/login"
-            className="font-medium text-blue-600 hover:text-blue-500"
+            className="font-medium text-blue-400 hover:text-blue-300"
           >
             Sign in
           </Link>
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow-xl shadow-gray-100 sm:rounded-lg sm:px-10">
+      <div className="relative mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-gray-900/70 backdrop-blur-xl border border-white/10 rounded-2xl py-8 px-6 sm:px-10">
           {error && (
-            <div className="mb-4 p-3 rounded bg-red-50 text-red-600 text-sm">
+            <div className="mb-5 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-sm">
               {error}
             </div>
           )}
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label
                   htmlFor="firstName"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-200 mb-1.5"
                 >
                   First name
                 </label>
-                <div className="mt-1">
-                  <input
-                    id="firstName"
-                    name="firstName"
-                    type="text"
-                    required
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    className="block w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
-                  />
-                </div>
+                <input
+                  id="firstName"
+                  name="firstName"
+                  type="text"
+                  required
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
               </div>
 
               <div>
                 <label
                   htmlFor="lastName"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-200 mb-1.5"
                 >
                   Last name
                 </label>
-                <div className="mt-1">
-                  <input
-                    id="lastName"
-                    name="lastName"
-                    type="text"
-                    required
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    className="block w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
-                  />
-                </div>
+                <input
+                  id="lastName"
+                  name="lastName"
+                  type="text"
+                  required
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
               </div>
             </div>
 
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-200 mb-1.5"
               >
                 Email address
               </label>
-              <div className="mt-1">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="block w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
-                />
-              </div>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="you@example.com"
+                className={inputClass}
+              />
             </div>
 
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-200 mb-1.5"
               >
                 Password
               </label>
-              <div className="mt-1 space-y-2">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="new-password"
-                  required
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="block w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
-                />
-                {formData.password && (
-                  <div className="space-y-1">
-                    <div className="flex h-1.5 w-full rounded-full bg-gray-200 overflow-hidden">
-                      <div
-                        className={`transition-all duration-300 ${passwordStrength.color}`}
-                        style={{
-                          width: `${(passwordStrength.strength / 5) * 100}%`,
-                        }}
-                      />
-                    </div>
-                    <p
-                      className={`text-xs ${
-                        passwordStrength.allowed
-                          ? "text-green-600"
-                          : "text-red-500"
-                      }`}
-                    >
-                      Password strength: {passwordStrength.label}
-                    </p>
-                    <ul className="text-xs text-gray-500 space-y-1 ml-4 list-disc">
-                      <li
-                        className={
-                          formData.password.length >= 8 ? "text-green-600" : ""
-                        }
-                      >
-                        At least 8 characters
-                      </li>
-                      <li
-                        className={
-                          /\d/.test(formData.password) ? "text-green-600" : ""
-                        }
-                      >
-                        Contains a number
-                      </li>
-                      <li
-                        className={
-                          /[a-z]/.test(formData.password)
-                            ? "text-green-600"
-                            : ""
-                        }
-                      >
-                        Contains a lowercase letter
-                      </li>
-                      <li
-                        className={
-                          /[A-Z]/.test(formData.password)
-                            ? "text-green-600"
-                            : ""
-                        }
-                      >
-                        Contains an uppercase letter
-                      </li>
-                      <li
-                        className={
-                          /[!@#$%^&*(),.?":{}|<>]/.test(formData.password)
-                            ? "text-green-600"
-                            : ""
-                        }
-                      >
-                        Contains a special character
-                      </li>
-                    </ul>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="new-password"
+                required
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="••••••••"
+                className={inputClass}
+              />
+              {formData.password && (
+                <div className="mt-3 space-y-2">
+                  <div className="flex h-1.5 w-full rounded-full bg-white/10 overflow-hidden">
+                    <div
+                      className={`transition-all duration-300 ${passwordStrength.color}`}
+                      style={{
+                        width: `${(passwordStrength.strength / 5) * 100}%`,
+                      }}
+                    />
                   </div>
-                )}
-              </div>
+                  <p
+                    className={`text-xs font-medium ${
+                      passwordStrength.allowed
+                        ? "text-emerald-400"
+                        : "text-red-400"
+                    }`}
+                  >
+                    Password strength: {passwordStrength.label}
+                  </p>
+                  <ul className="text-xs space-y-1 ml-4 list-disc">
+                    <li className={checkItem(formData.password.length >= 8)}>
+                      At least 8 characters
+                    </li>
+                    <li className={checkItem(/\d/.test(formData.password))}>
+                      Contains a number
+                    </li>
+                    <li className={checkItem(/[a-z]/.test(formData.password))}>
+                      Contains a lowercase letter
+                    </li>
+                    <li className={checkItem(/[A-Z]/.test(formData.password))}>
+                      Contains an uppercase letter
+                    </li>
+                    <li
+                      className={checkItem(
+                        /[!@#$%^&*(),.?":{}|<>]/.test(formData.password)
+                      )}
+                    >
+                      Contains a special character
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
 
             <div>
               <label
                 htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-200 mb-1.5"
               >
                 Confirm password
               </label>
-              <div className="mt-1">
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type="password"
-                  autoComplete="new-password"
-                  required
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className="block w-full appearance-none rounded-lg border border-gray-300 px-3 py-2 shadow-sm placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
-                />
-              </div>
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                autoComplete="new-password"
+                required
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="••••••••"
+                className={inputClass}
+              />
             </div>
 
-            <div>
-              <button
-                type="submit"
-                disabled={registerMutation.isPending}
-                className="flex w-full justify-center rounded-full bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all hover:shadow-lg hover:shadow-blue-200 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {registerMutation.isPending
-                  ? "Creating account..."
-                  : "Create account"}
-              </button>
-            </div>
+            <button
+              type="submit"
+              disabled={registerMutation.isPending}
+              className="flex w-full items-center justify-center rounded-full bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              {registerMutation.isPending
+                ? "Creating account..."
+                : "Create account"}
+            </button>
           </form>
         </div>
       </div>

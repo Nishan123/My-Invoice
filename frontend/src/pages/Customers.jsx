@@ -90,7 +90,7 @@ function Customers() {
   if (error) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-200px)]">
-        <div className="text-red-600 bg-red-50 p-4 rounded-lg">
+        <div className="text-red-600 bg-red-950 p-4 rounded-lg">
           Error: {error}
         </div>
       </div>
@@ -100,7 +100,7 @@ function Customers() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-800">Customers</h2>
+        <h2 className="text-2xl font-bold text-gray-100">Customers</h2>
         <button
           onClick={() => setIsModalOpen(true)}
           className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
@@ -127,21 +127,21 @@ function Customers() {
           {customers?.map((customer) => (
             <div
               key={customer._id}
-              className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100"
+              className="bg-gray-900 rounded-xl border  transition-all duration-300 overflow-hidden border border-gray-800"
             >
               {/* Customer Header */}
-              <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50">
+              <div className="p-6 bg-gradient-to-r from-black to-gray-950">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full bg-blue-900 flex items-center justify-center">
                     <span className="text-xl font-semibold text-blue-600">
                       {customer.name.charAt(0).toUpperCase()}
                     </span>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-800">
+                    <h3 className="text-lg font-semibold text-gray-100">
                       {customer.name}
                     </h3>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-400">
                       Customer ID: #{customer._id.slice(-4)}
                     </p>
                   </div>
@@ -151,7 +151,7 @@ function Customers() {
               {/* Customer Details */}
               <div className="p-6 space-y-4">
                 <div className="space-y-3">
-                  <div className="flex items-center space-x-3 text-gray-600 hover:text-blue-600 transition-colors">
+                  <div className="flex items-center space-x-3 text-gray-300 hover:text-blue-600 transition-colors">
                     <svg
                       className="w-5 h-5"
                       fill="none"
@@ -173,7 +173,7 @@ function Customers() {
                     </a>
                   </div>
 
-                  <div className="flex items-center space-x-3 text-gray-600 hover:text-blue-600 transition-colors">
+                  <div className="flex items-center space-x-3 text-gray-300 hover:text-blue-600 transition-colors">
                     <svg
                       className="w-5 h-5"
                       fill="none"
@@ -195,7 +195,7 @@ function Customers() {
                     </a>
                   </div>
 
-                  <div className="flex items-start space-x-3 text-gray-600">
+                  <div className="flex items-start space-x-3 text-gray-300">
                     <svg
                       className="w-5 h-5 mt-0.5 flex-shrink-0"
                       fill="none"
@@ -220,13 +220,13 @@ function Customers() {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex justify-end space-x-2 pt-4 border-t border-gray-100">
+                <div className="flex justify-end space-x-2 pt-4 border-t border-gray-800">
                   <button
                     onClick={() => {
                       setEditingCustomer(customer);
                       setIsModalOpen(true);
                     }}
-                    className="px-3 py-1.5 text-sm font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors duration-200 flex items-center space-x-1"
+                    className="px-3 py-1.5 text-sm font-medium text-blue-600 hover:text-blue-700 bg-blue-950 hover:bg-blue-900 rounded-lg transition-colors duration-200 flex items-center space-x-1"
                   >
                     <svg
                       className="w-4 h-4"
@@ -248,7 +248,7 @@ function Customers() {
                       setCustomerToDelete(customer);
                       setIsDeleteModalOpen(true);
                     }}
-                    className="px-3 py-1.5 text-sm font-medium text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg transition-colors duration-200 flex items-center space-x-1"
+                    className="px-3 py-1.5 text-sm font-medium text-red-600 hover:text-red-700 bg-red-950 hover:bg-red-900 rounded-lg transition-colors duration-200 flex items-center space-x-1"
                   >
                     <svg
                       className="w-4 h-4"
@@ -274,7 +274,7 @@ function Customers() {
 
       {!isLoading && !error && customers.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500">
+          <p className="text-gray-400">
             No customers found. Add your first customer!
           </p>
         </div>
@@ -291,53 +291,53 @@ function Customers() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-700">
+              <label className="block text-sm font-semibold text-gray-200">
                 Name
               </label>
               <input
                 type="text"
                 name="name"
                 defaultValue={editingCustomer?.name}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-700">
+              <label className="block text-sm font-semibold text-gray-200">
                 Email
               </label>
               <input
                 type="email"
                 name="email"
                 defaultValue={editingCustomer?.email}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-700">
+              <label className="block text-sm font-semibold text-gray-200">
                 Phone
               </label>
               <input
                 type="tel"
                 name="phone"
                 defaultValue={editingCustomer?.phone}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 required
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-semibold text-gray-700">
+            <label className="block text-sm font-semibold text-gray-200">
               Address
             </label>
             <textarea
               name="address"
               defaultValue={editingCustomer?.address}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              className="w-full px-4 py-2 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               rows="3"
               required
             />
@@ -350,7 +350,7 @@ function Customers() {
                 setIsModalOpen(false);
                 setEditingCustomer(null);
               }}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-4 py-2 text-sm font-medium text-gray-200 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
             >
               Cancel
             </button>
@@ -374,7 +374,7 @@ function Customers() {
       >
         <div className="space-y-6">
           <div className="text-center">
-            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-900 mb-4">
               <svg
                 className="h-6 w-6 text-red-600"
                 fill="none"
@@ -389,10 +389,10 @@ function Customers() {
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900">
+            <h3 className="text-lg font-medium text-gray-50">
               Delete Customer
             </h3>
-            <p className="mt-2 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-gray-400">
               Are you sure you want to delete &ldquo;{customerToDelete?.name}
               &rdquo;? This action cannot be undone.
             </p>
@@ -403,7 +403,7 @@ function Customers() {
                 setIsDeleteModalOpen(false);
                 setCustomerToDelete(null);
               }}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              className="px-4 py-2 text-sm font-medium text-gray-200 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
             >
               Cancel
             </button>
